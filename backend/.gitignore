@@ -1,0 +1,40 @@
+# Python bytecode files
+*.pyc
+*.pyo
+__pycache__/
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# IDE and editor configurations
+.idea/
+.vscode/
+
+# FastAPI server pid file
+*.pid
+
+# FastAPI log files
+*.log
+
+# Docker-related files
+*.dockerfile
+docker-compose.override.yml
+
+# SQLite database (if applicable)
+*.db
+*.sqlite3
+
+# .env files (for environment variables)
+.env
+
+# Pytest cache
+.cache/
+
+# Coverage reports
+.coverage
+*.coveragerc
+
+# MySQL-related (if applicable)
+*.sql
