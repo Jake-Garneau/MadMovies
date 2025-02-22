@@ -153,6 +153,35 @@
     color: white;
 }
 
+.languages-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.option-button {
+    background-color: transparent;
+    border: 2px solid #ff0000;
+    color: #ff0000;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    font-weight: bold;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.option-button:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+.option-button.selected {
+    background-color: #ff0000;
+    color: white;
+}
+
 /* Make the grid responsive */
 @media (max-width: 600px) {
     .genres-grid {

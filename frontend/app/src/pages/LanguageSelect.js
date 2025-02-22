@@ -7,7 +7,7 @@ const LanguageSelect = () => {
   const [selectedLanguages, setSelectedLanguages] = useState([]);
 
   const languages = [
-    'English', 'Spanish', 'French', 'Japanese', 'Korean','Other'
+    'English', 'Spanish', 'French', 'Japanese', 'Korean', 'Other'
   ];
 
   const toggleLanguage = (language) => {

@@ -27,7 +27,7 @@ const GenreSelect = () => {
       <div className="card">
         <div className="content">
           <h1 className="title">Select Genres</h1>
-          <p className="description">Select all genres you are interested in! (At least 1)</p>          
+          <p className="description">Select all genres you are interested in</p>          
           <div className="genres-grid">
             {genres.map((genre) => (
               <button 
