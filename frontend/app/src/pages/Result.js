@@ -6,6 +6,7 @@ const Result = () => {
 
   const handleSubmit = async () => {
     try {
+      console.log("Submitting preferences:", preferences);
       const response = await fetch("http://api.com/recommend", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

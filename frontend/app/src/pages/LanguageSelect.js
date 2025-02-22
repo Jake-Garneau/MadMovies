@@ -1,32 +1,31 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { QuizContext } from "../contexts/QuizContext";
 import "./shared.css";
 
 const LanguageSelect = () => {
   const navigate = useNavigate();
-  const [preferences, setPreferences] = useState({
-    language: []
-  });
+  const { preferences, updatePreference } = useContext(QuizContext);
 
   const languages = [
-    'English', 'Spanish', 'French', 'Japanese', 'Korean', 'Other'
+    "English",
+    "Spanish",
+    "French",
+    "Japanese",
+    "Korean",
+    "Other",
   ];
 
   const toggleLanguage = (language) => {
-    setPreferences(prev => {
-      const currentLanguages = prev.language || [];
-      if (currentLanguages.includes(language)) {
-        return {
-          ...prev,
-          language: currentLanguages.filter(lang => lang !== language)
-        };
-      } else {
-        return {
-          ...prev,
-          language: [...currentLanguages, language]
-        };
-      }
-    });
+    const currentLanguages = preferences.language || [];
+    if (currentLanguages.includes(language)) {
+      updatePreference(
+        "language",
+        currentLanguages.filter((lang) => lang !== language)
+      );
+    } else {
+      updatePreference("language", [...currentLanguages, language]);
+    }
   };
 
   return (
@@ -40,7 +39,7 @@ const LanguageSelect = () => {
               <button
                 key={language}
                 className={`option-button ${
-                  preferences.language?.includes(language) ? "selected" : ""
+                  preferences.language.includes(language) ? "selected" : ""
                 }`}
                 onClick={() => toggleLanguage(language)}
               >

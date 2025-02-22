@@ -1,25 +1,40 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './shared.css';
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { QuizContext } from "../contexts/QuizContext";
+import "./shared.css";
 
 const GenreSelect = () => {
   const navigate = useNavigate();
-  const [selectedGenres, setSelectedGenres] = useState([]);
+  const { preferences, updatePreference } = useContext(QuizContext);
 
   const genres = [
-    'Action', 'Adventure', 'Animation', 'Comedy',
-    'Documentary', 'Drama','Family', 'Fantasy', 'Horror','History', 'Mystery',
-    'Romance', 'Sci-Fi', 'Thriller', 'Other'
+    "Action",
+    "Adventure",
+    "Animation",
+    "Comedy",
+    "Documentary",
+    "Drama",
+    "Family",
+    "Fantasy",
+    "Horror",
+    "History",
+    "Mystery",
+    "Romance",
+    "Sci-Fi",
+    "Thriller",
+    "Other",
   ];
 
   const toggleGenre = (genre) => {
-    setSelectedGenres(prevGenres => {
-      if (prevGenres.includes(genre)) {
-        return prevGenres.filter(g => g !== genre);
-      } else {
-        return [...prevGenres, genre];
-      }
-    });
+    const currentGenres = preferences.genre || [];
+    if (currentGenres.includes(genre)) {
+      updatePreference(
+        "genre",
+        currentGenres.filter((g) => g !== genre)
+      );
+    } else {
+      updatePreference("genre", [...currentGenres, genre]);
+    }
   };
 
   return (
@@ -27,28 +42,33 @@ const GenreSelect = () => {
       <div className="card">
         <div className="content">
           <h1 className="title">Select Genres</h1>
-          <p className="description">Select all genres you are interested in</p>          
+          <p className="description">Select all genres you are interested in</p>
           <div className="genres-grid">
             {genres.map((genre) => (
-              <button 
+              <button
                 key={genre}
-                className={`genre-button ${selectedGenres.includes(genre) ? 'selected' : ''}`}
+                className={`genre-button ${
+                  preferences.genre.includes(genre) ? "selected" : ""
+                }`}
                 onClick={() => toggleGenre(genre)}
               >
                 {genre}
               </button>
             ))}
           </div>
-          
+
           <div className="nav-buttons">
-            <button className="back-button" onClick={() => navigate('/language')}>
+            <button
+              className="back-button"
+              onClick={() => navigate("/language")}
+            >
               Back
             </button>
-            <button 
+            <button
               className="next-button"
-              onClick={() => navigate('/era')}
-              style={{ maxWidth: '150px' }}
-              disabled={selectedGenres.length === 0}
+              onClick={() => navigate("/era")}
+              style={{ maxWidth: "150px" }}
+              disabled={preferences.genre.length === 0}
             >
               Next
             </button>
