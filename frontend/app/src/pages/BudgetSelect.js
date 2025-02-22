@@ -39,7 +39,7 @@ const BudgetSelect = () => {
          </div>
          
          <div className="nav-buttons">
-           <button className="back-button" onClick={() => navigate('/release-date')}>
+           <button className="back-button" onClick={() => navigate('/era')}>
              Back
            </button>
            <button 

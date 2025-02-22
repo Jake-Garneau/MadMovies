@@ -25,7 +25,7 @@ const ReleaseDateSelect = () => {
      <div className="card">
        <div className="content">
          <h1 className="title">Select Era</h1>
-         <p className="description">Select all decades you would watch movies from</p>          
+         <p className="description">Select all decades you are interested in</p>          
          <div className="languages-grid">
            {decades.map((decade) => (
              <button 
