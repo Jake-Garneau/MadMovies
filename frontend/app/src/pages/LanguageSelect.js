@@ -1,22 +1,30 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { QuizContext } from "../contexts/QuizContext";
 import "./shared.css";
 
 const LanguageSelect = () => {
   const navigate = useNavigate();
-  const { preferences, updatePreference } = useContext(QuizContext);
+  const [preferences, setPreferences] = useState({
+    language: []
+  });
 
   const languages = [
     'English', 'Spanish', 'French', 'Japanese', 'Korean', 'Other'
   ];
 
   const toggleLanguage = (language) => {
-    updatePreference("language", (prevLanguages = []) => {
-      if (prevLanguages.includes(language)) {
-        return prevLanguages.filter((lang) => lang !== language);
+    setPreferences(prev => {
+      const currentLanguages = prev.language || [];
+      if (currentLanguages.includes(language)) {
+        return {
+          ...prev,
+          language: currentLanguages.filter(lang => lang !== language)
+        };
       } else {
-        return [...prevLanguages, language];
+        return {
+          ...prev,
+          language: [...currentLanguages, language]
+        };
       }
     });
   };
@@ -27,7 +35,6 @@ const LanguageSelect = () => {
         <div className="content">
           <h1 className="title">Select Language</h1>
           <p className="description">Select all languages you would watch</p>
-
           <div className="languages-grid">
             {languages.map((language) => (
               <button

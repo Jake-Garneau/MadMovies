@@ -30,14 +30,14 @@
   }
   
   .description {
-    font-size: 1.125rem;
-    color: #4b5563;
+    font-size: 1.25rem;
+    color: #d2d2d2;
     margin-bottom: 2rem;
   }
   
   .button-container {
     width: 100%;
-    max-width: 36rem;
+    max-width: 26rem;
   }
   
   .start-button {

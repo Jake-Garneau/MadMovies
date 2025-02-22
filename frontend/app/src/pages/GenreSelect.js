@@ -46,7 +46,7 @@ const GenreSelect = () => {
             </button>
             <button 
               className="next-button"
-              onClick={() => navigate('/release-date')}
+              onClick={() => navigate('/era')}
               style={{ maxWidth: '150px' }}
               disabled={selectedGenres.length === 0}
             >
