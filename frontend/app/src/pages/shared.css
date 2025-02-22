@@ -42,12 +42,14 @@
   
   .start-button {
     width: 100%;
+    font-size: 2rem;
     background-color: #ff0000;
     color: white;
     font-weight: 1000;
-    padding: 0.75rem 1.5rem;
+    padding: 1rem;
     border-radius: 1rem;
     transition: background-color 0.1s;
+    cursor: pointer;
   }
   
   .start-button:hover {
@@ -103,7 +105,58 @@
     font-weight: bold;
 }
 
+.next-button {
+    background-color: #ff0000;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-weight: bold;
+}
+
 .back-button:hover {
     background-color: #374151;
+}
+
+.next-button:hover {
+    background-color: #a10101;
+}
+
+.genres-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.genre-button {
+    background-color: transparent;
+    border: 2px solid #ff0000;
+    color: #ff0000;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    font-weight: bold;
+    transition: all 0.2s;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.genre-button:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+.genre-button.selected {
+    background-color: #ff0000;
+    color: white;
+}
+
+/* Make the grid responsive */
+@media (max-width: 600px) {
+    .genres-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
   

@@ -4,34 +4,39 @@ import './shared.css';
 
 const LanguageSelect = () => {
   const navigate = useNavigate();
-  const [selectedLanguage, setSelectedLanguage] = useState(null);
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
+
+  const languages = [
+    'English', 'Spanish', 'French', 'Japanese', 'Korean','Other'
+  ];
+
+  const toggleLanguage = (language) => {
+    setSelectedLanguages(prevLanguages => {
+      if (prevLanguages.includes(language)) {
+        return prevLanguages.filter(lang => lang !== language);
+      } else {
+        return [...prevLanguages, language];
+      }
+    });
+  };
 
   return (
     <div className="container">
       <div className="card">
         <div className="content">
           <h1 className="title">Select Language</h1>
-          <p className="description">What language would you prefer?</p>
+          <p className="description">Select all languages you would watch</p>
           
-          <div className="options-container">
-            <button 
-              className={`option-button ${selectedLanguage === 'english' ? 'selected' : ''}`}
-              onClick={() => setSelectedLanguage('english')}
-            >
-              English
-            </button>
-            <button 
-              className={`option-button ${selectedLanguage === 'spanish' ? 'selected' : ''}`}
-              onClick={() => setSelectedLanguage('spanish')}
-            >
-              Spanish
-            </button>
-            <button 
-              className={`option-button ${selectedLanguage === 'korean' ? 'selected' : ''}`}
-              onClick={() => setSelectedLanguage('korean')}
-            >
-              Korean
-            </button>
+          <div className="languages-grid">
+            {languages.map((language) => (
+              <button 
+                key={language}
+                className={`option-button ${selectedLanguages.includes(language) ? 'selected' : ''}`}
+                onClick={() => toggleLanguage(language)}
+              >
+                {language}
+              </button>
+            ))}
           </div>
           
           <div className="nav-buttons">
@@ -39,9 +44,9 @@ const LanguageSelect = () => {
               Back
             </button>
             <button 
-              className="start-button"
+              className="next-button"
               onClick={() => navigate('/genre')}
-              style={{ maxWidth: '150px' }}
+              disabled={selectedLanguages.length === 0}
             >
               Next
             </button>
