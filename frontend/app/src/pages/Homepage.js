@@ -28,11 +28,6 @@ const Homepage = () => {
                             Start Quiz
                         </button>
 
-                        <div className="features">
-                            <p>✨ Personalized recommendations</p>
-                            <p>🎬 Discover hidden gems</p>
-                            <p>⚡ Takes only 2 minutes</p>
-                        </div>
                     </div>
                 </div>
             </div>
