@@ -75,3 +75,4 @@ uvicorn api:app --reload
 - Dockerize and deploy outside of local environment
 - Add placeholders for missing images
 - UI touchups
+- Preferences reset on 'start over'
