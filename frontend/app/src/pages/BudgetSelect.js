@@ -52,7 +52,7 @@ const BudgetSelect = () => {
               onClick={() => navigate("/result")}
               disabled={preferences.budget.length === 0}
             >
-              Next
+              Submit
             </button>
           </div>
         </div>

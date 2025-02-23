@@ -1,30 +1,44 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { QuizContext } from "../contexts/QuizContext";
 
 const Result = () => {
   const { preferences } = useContext(QuizContext);
+  const hasSubmittedRef = useRef(false);
 
-  const handleSubmit = async () => {
-    try {
+  useEffect(() => {
+    if (hasSubmittedRef.current) return;
+
+    const handleSubmit = async () => {
       console.log("Submitting preferences:", preferences);
-      const response = await fetch("http://127.0.0.1:8000/submit-preferences", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(preferences),
-      });
+      hasSubmittedRef.current = true;
 
-      const data = await response.json();
-      console.log("Movie Recommendations:", data);
-    } catch (error) {
-      console.error("Error fetching recommendations:", error);
+      try {
+        const response = await fetch(
+          "http://127.0.0.1:8000/submit-preferences",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(preferences),
+          }
+        );
+
+        const data = await response.json();
+        console.log("Movie Recommendations:", data);
+      } catch (error) {
+        console.error("Error fetching recommendations:", error);
+      }
+    };
+
+    if (preferences && Object.keys(preferences).length > 0) {
+      handleSubmit();
     }
-  };
+  }, [preferences]);
+
+  console.log("Rendered with preferences:", preferences);
 
   return (
-    
     <div className="container">
       <h1>Quiz Complete!</h1>
-      <button onClick={handleSubmit}>Get Recommendations</button>
     </div>
   );
 };
