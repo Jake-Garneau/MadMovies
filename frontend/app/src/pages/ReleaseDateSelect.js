@@ -38,7 +38,7 @@ const ReleaseDateSelect = () => {
                 }`}
                 onClick={() => toggleDecade(decade)}
               >
-                {decade}
+                {typeof decade === 'number' ? `${decade}'s` : decade}
               </button>
             ))}
           </div>

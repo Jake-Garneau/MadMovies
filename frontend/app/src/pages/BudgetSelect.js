@@ -38,7 +38,7 @@ const BudgetSelect = () => {
                 }`}
                 onClick={() => toggleBudget(budget)}
               >
-                {budget}
+                {budget === "small" ? "Small (<2M)" : budget === "med" ? "Medium (2-100M)" : budget === "large" ? "Large(>100M)" : ""}
               </button>
             ))}
           </div>

@@ -43,7 +43,7 @@ const LanguageSelect = () => {
                 }`}
                 onClick={() => toggleLanguage(language)}
               >
-                {language}
+                {language === "Spanish, Castilian" ? "Spanish" : language}
               </button>
             ))}
           </div>
