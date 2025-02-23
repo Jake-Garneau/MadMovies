@@ -17,13 +17,15 @@ const LanguageSelect = () => {
   ];
 
   const toggleLanguage = (language) => {
-    updatePreference("language", (prevLanguages = []) => {
-      if (prevLanguages.includes(language)) {
-        return prevLanguages.filter((lang) => lang !== language);
-      } else {
-        return [...prevLanguages, language];
-      }
-    });
+    const currentLanguages = preferences.language || [];
+    if (currentLanguages.includes(language)) {
+      updatePreference(
+        "language",
+        currentLanguages.filter((lang) => lang !== language)
+      );
+    } else {
+      updatePreference("language", [...currentLanguages, language]);
+    }
   };
 
   return (
@@ -32,13 +34,12 @@ const LanguageSelect = () => {
         <div className="content">
           <h1 className="title">Select Language</h1>
           <p className="description">Select all languages you would watch</p>
-
           <div className="languages-grid">
             {languages.map((language) => (
               <button
                 key={language}
                 className={`option-button ${
-                  preferences.language?.includes(language) ? "selected" : ""
+                  preferences.language.includes(language) ? "selected" : ""
                 }`}
                 onClick={() => toggleLanguage(language)}
               >

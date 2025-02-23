@@ -6,8 +6,8 @@ export const QuizProvider = ({ children }) => {
   const [preferences, setPreferences] = useState({
     language: [],
     genre: [],
-    releaseDate: null,
-    budget: null,
+    releaseDate: [],
+    budget: [],
   });
 
   const updatePreference = (key, value) => {
