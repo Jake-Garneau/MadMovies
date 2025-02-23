@@ -59,9 +59,16 @@ def get_movies_by_preference(
         releaseDate = [2020, 2010]
     if budget is None:
         budget = ["small", "med"]
+    main_languages = {"english", "spanish, castilian", "japanese", "korean", "french"}
+
     
     language = [lang.lower() for lang in language]
     genre = [g.lower() for g in genre]
+    if "other" in language:
+        allowed_languages = main_languages.intersection(language)
+        df = df[df["orig_lang"].isin(allowed_languages) | ~df["orig_lang"].isin(main_languages)]
+    else:
+        df = df[df["orig_lang"].isin(language)]
     filtered_df = df[df["orig_lang"].isin(language)]
     filtered_df["genre"] = filtered_df["genre"].astype(str).str.lower()
     filtered_df = filtered_df[filtered_df["genre"].apply(lambda g: any(gen in g for gen in genre))]
