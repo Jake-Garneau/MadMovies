@@ -160,8 +160,9 @@ const Result = () => {
               </button>
               <h2 className="movie-title">{movie.names}</h2>
               <div className="card-content">
-                <p className="movie-genres">Genre(s): {movie.genre}</p>
-                <p className="release-date">Released: {movie.date_x}</p>
+                <p className="movie-card-text">Genre(s): {movie.genre}</p>
+                <p className="movie-card-text">Rating: {movie.score}/100</p>
+                <p className="movie-card-text">Released: {movie.date_x}</p>
                 <button
                   className="description-toggle"
                   onClick={() => toggleDescription(index)}
