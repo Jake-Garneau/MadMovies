@@ -28,7 +28,6 @@ thread_local = threading.local()
 
 def get_db_connection():
     if not hasattr(thread_local, "con"):
-        # Create a new connection for the current thread
         thread_local.con = sqlite3.connect('IMDBmovies.db')
     return thread_local.con
 
@@ -39,15 +38,11 @@ con = sqlite3.connect(name)
 def read_root():
     return {"message": "Welcome to the FastAPI app!"}
 
-#def qry(QUERY):
-    #return pd.read_sql(QUERY, conn)
-
-#def get_movies_by_preference(language="english", genre="Drama", decade=2020, budget="large"):
 def get_movies_by_preference(
     language: Optional[List[str]] = None, 
     genre: Optional[List[str]] = None, 
-    decade: Optional[int] = None, 
-    budget: Optional[str] = None
+    decade: Optional[List[int]] = None, 
+    budget: Optional[List[str]] = None
 ):
     con = get_db_connection()
 
@@ -57,72 +52,79 @@ def get_movies_by_preference(
     df = pd.read_sql(qry, con)
     df["orig_lang"] = df["orig_lang"].astype(str).str.strip().str.lower()
     if language is None:
-        language = ["spanish", "english"]
+        language = ["spanish, castilian"]
     if genre is None:
-        genre = ["drama", "comedy"]
-    
-    #filtered_df = df[df["orig_lang"] == "English"]
+        genre = ["drama", "comedy", "action"]
+    if decade is None:
+        decade = [2020, 2010]
+    if budget is None:
+        budget = ["small", "med"]
+    main_languages = {"english", "spanish, castilian", "japanese", "korean", "french"}
     language = [lang.lower() for lang in language]
     genre = [g.lower() for g in genre]
-    filtered_df = df[df["orig_lang"].isin(language)]
-    #genre = [g.lower() for g in genre]
+    if "other" in language:
+        allowed_languages = main_languages.intersection(language)
+        df = df[df["orig_lang"].isin(allowed_languages) | ~df["orig_lang"].isin(main_languages)]
+    else:
+        df = df[df["orig_lang"].isin(language)]
+    #filtered_df = df[df["orig_lang"].isin(language)]
     filtered_df["genre"] = filtered_df["genre"].astype(str).str.lower()
     filtered_df = filtered_df[filtered_df["genre"].apply(lambda g: any(gen in g for gen in genre))]
 
-    #filtered_df = df[df["orig_lang"] == language.lower()] #right now english but change to some varaible based on user preference
-    #filtered_df = filtered_df[filtered_df["genre"].str.contains(rf'\b{genre}\b', case=False, na=False)] #right not set to drama for genre, but will need to modify to work for selected genre by user
     if "date_x" in filtered_df.columns:
         filtered_df["date_x"] = filtered_df["date_x"].astype(str).str.strip()
         filtered_df["date_x"] = pd.to_datetime(filtered_df["date_x"], errors="coerce", infer_datetime_format=True)
 
-        #filtered_df["date_x"] = pd.to_datetime(filtered_df["date_x"], format="%m/%d/%Y", errors="coerce")
         filtered_df = filtered_df.dropna(subset=["date_x"])
-        filtered_df["year"] = filtered_df["date_x"].dt.year  # Add 'year' column
+        filtered_df["year"] = filtered_df["date_x"].dt.year
     else:
         raise ValueError("Column 'date_x' not found in DataFrame!")
-    #print("Columns in DataFrame:", df.columns)
-    #print("First 5 rows of DataFrame:\n", df.head())
     if "year" not in filtered_df.columns:
         raise ValueError("Column 'year' was not created successfully!")
     
-
-    #filtered_df["date_x"] = filtered_df["date_x"].astype(str)
-    #filtered_df["date_x"] = filtered_df["date_x"].apply(lambda x: x.strftime("%Y-%m-%d") if pd.notna(x) else None)
-
-    #filtered_df.replace([np.inf, -np.inf], np.nan, inplace=True)
-    #filtered_df.replace([np.inf, -np.inf], np.nan, inplace=True)
-    #filtered_df.fillna("", inplace=True)
-    #return JSONResponse(filtered_df.fillna("").to_dict(orient="records"))
+    
     if decade:
-        start_year = (decade // 10) * 10   
-        end_year = start_year + 9          
-        filtered_df = filtered_df[(filtered_df["year"] >= start_year) & (filtered_df["year"] <= end_year)]
+        start_years = []
+        end_years = []
+
+        for d in decade:
+            start_year = (d // 10) * 10
+            end_year = start_year + 9
+            start_years.append(start_year)
+            end_years.append(end_year)
+
+        filtered_df = filtered_df[
+            filtered_df["year"].apply(lambda y: any(start <= y <= end for start, end in zip(start_years, end_years)))
+        ]
 
     if "budget_x" in filtered_df.columns:
         filtered_df["budget_x"] = pd.to_numeric(filtered_df["budget_x"], errors="coerce")
     else:
-        raise ValueError("Column 'budget' not found in DataFrame!")
-    
-    filtered_df["date_x"] = filtered_df["date_x"].astype(str) 
+        raise ValueError("Column 'budget_x' not found in DataFrame!")
+
+    filtered_df["date_x"] = filtered_df["date_x"].astype(str)  
+
     if budget:
-        budget = budget.lower()
-        if budget == "small":
-            filtered_df = filtered_df[filtered_df["budget_x"] < 2_000_000]
-        elif budget == "med":
-            filtered_df = filtered_df[(filtered_df["budget_x"] >= 2_000_000) & (filtered_df["budget_x"] <= 100_000_000)]
-        elif budget == "large":
-            filtered_df = filtered_df[filtered_df["budget_x"] > 100_000_000]
-        else:
-            raise ValueError("Invalid budget category! Choose from: 'Small', 'Med', or 'Large'.")
+        budget_filters = []
+        
+        for b in budget:
+            if b == "small":
+                budget_filters.append(filtered_df["budget_x"] < 2_000_000)
+            elif b == "med":
+                budget_filters.append((filtered_df["budget_x"] >= 2_000_000) & (filtered_df["budget_x"] <= 100_000_000))
+            elif b == "large":
+                budget_filters.append(filtered_df["budget_x"] > 100_000_000)
+            else:
+                raise ValueError("Invalid budget category! Choose from: 'small', 'med', or 'large'.")
+
+        if budget_filters:
+            filtered_df = filtered_df[pd.concat(budget_filters, axis=1).any(axis=1)]
+
 
     return JSONResponse(filtered_df.to_dict(orient="records"))
 
-#def get_movies_by_preference(language="english", genre="Drama", decade=2020, budget="large"):
-
-
 @app.get("/first-5-movie-names", response_model=List[str])
 def get_first_5_movies():
-    # Fetch the first 5 movie names from the database
     movie_names = get_movies_by_preference()
     return movie_names
 

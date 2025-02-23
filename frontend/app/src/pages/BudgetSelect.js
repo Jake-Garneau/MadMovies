@@ -7,7 +7,7 @@ const BudgetSelect = () => {
   const navigate = useNavigate();
   const { preferences, updatePreference } = useContext(QuizContext);
 
-  const budgets = ["Small (<$20M)", "Medium ($20M-$100M)", "Large (>$100M)"];
+  const budgets = ["small", "med", "large"];
 
   const toggleBudget = (budget) => {
     const currentBudgets = preferences.budget || [];

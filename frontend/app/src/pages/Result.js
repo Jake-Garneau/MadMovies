@@ -6,8 +6,7 @@ import "./shared.css";
 const Result = () => {
   const { preferences } = useContext(QuizContext);
   const hasSubmittedRef = useRef(false);
-  const [recommendations, setRecommendations] = useState(null);
-  const navigate = useNavigate();
+  const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     if (hasSubmittedRef.current) return;
@@ -27,10 +26,12 @@ const Result = () => {
         );
 
         const data = await response.json();
-        setRecommendations(data);
-        console.log("Movie Recommendations:", data);
+        console.log("Movie Preferences Saved:", data);
+
+        // Fetch recommended movies after submitting preferences
+        fetchMovies();
       } catch (error) {
-        console.error("Error fetching recommendations:", error);
+        console.error("Error submitting preferences:", error);
       }
     };
 
@@ -39,35 +40,30 @@ const Result = () => {
     }
   }, [preferences]);
 
+  const fetchMovies = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/get-movies");
+      const data = await response.json();
+      console.log("Fetched Movies:", data);
+      setMovies(data);
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+    }
+  };
+
   return (
     <div className="container">
-      <div className="content">
-        <h1 className="title">Your Movie Matches</h1>
-        <div className="recommendations-grid">
-          {recommendations?.slice(0, 3).map((movie, index) => (
-            <div key={index} className="recommendation-card">
-              <img 
-                src={movie.poster_path}
-                alt={movie.title}
-                className="movie-poster"
-              />
-              <h2 className="movie-title">{movie.title}</h2>
-              <div className="movie-genres">
-                {movie.genres?.map((genre, idx) => (
-                  <span key={idx} className="genre-tag">{genre}</span>
-                ))}
-              </div>
-              <p className="movie-overview">{movie.overview}</p>
-            </div>
+      <h1>Quiz Complete!</h1>
+      <h2>Recommended Movies:</h2>
+      {movies.length > 0 ? (
+        <ul>
+          {movies.map((movie, index) => (
+            <li key={index}>{movie.names}</li>
           ))}
-        </div>
-
-        <div className="nav-buttons">
-          <button className="start-button" onClick={() => navigate('/')}>
-            Start Over
-          </button>
-        </div>
-      </div>
+        </ul>
+      ) : (
+        <p>Loading movie recommendations...</p>
+      )}
     </div>
   );
 };

@@ -9,7 +9,7 @@ const LanguageSelect = () => {
 
   const languages = [
     "English",
-    "Spanish",
+    "Spanish, Castilian",
     "French",
     "Japanese",
     "Korean",
