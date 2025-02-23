@@ -21,7 +21,8 @@ const Result = () => {
   };
 
   return (
-    <div>
+    
+    <div className="container">
       <h1>Quiz Complete!</h1>
       <button onClick={handleSubmit}>Get Recommendations</button>
     </div>

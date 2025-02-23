@@ -17,7 +17,7 @@ const Homepage = () => {
                         MadMovies
                     </h1>
                     <p className="description">
-                        Take the quiz! Find your next favorite movie!
+                        Find your new favorite movie in just a few clicks!
                     </p>
 
                     <div className="button-container">
@@ -25,7 +25,7 @@ const Homepage = () => {
                             onClick={startQuiz}
                             className="start-button"
                         >
-                            Start Quiz
+                            Get Started
                         </button>
 
                     </div>
