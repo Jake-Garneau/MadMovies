@@ -30,7 +30,7 @@ This is a **movie recommendation web app** built for a **24-hour hackathon**. Th
 
 3. **Recommendations**:
 
-   - The system filters the
+   - The system filters the movies based on user choices.
    - It returns a list of recommended movies to the user.
 
 4. **Database (SQLite)**:
