@@ -20,7 +20,7 @@ const GenreSelect = () => {
     "History",
     "Mystery",
     "Romance",
-    "Sci-Fi",
+    "Science Fiction",
     "Thriller",
     "Other",
   ];
@@ -52,7 +52,7 @@ const GenreSelect = () => {
                 }`}
                 onClick={() => toggleGenre(genre)}
               >
-                {genre}
+                {genre === "Science Fiction" ? "Sci-Fi" : genre}
               </button>
             ))}
           </div>
