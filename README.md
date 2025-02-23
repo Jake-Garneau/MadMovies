@@ -76,3 +76,6 @@ uvicorn api:app --reload
 - Add placeholders for missing images
 - UI touchups
 - Preferences reset on 'start over'
+- Capital letters to genre listings
+- Move reroll button over
+- descriptions close on x
