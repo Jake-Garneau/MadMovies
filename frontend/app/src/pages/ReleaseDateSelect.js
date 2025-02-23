@@ -7,7 +7,7 @@ const ReleaseDateSelect = () => {
   const navigate = useNavigate();
   const { preferences, updatePreference } = useContext(QuizContext);
 
-  const decades = ["2020s", "2010s", "2000s", "1990s", "1980s", "Older"];
+  const decades = [2020, 2010, 2000, 1990, 1980, "Older"];
 
   const toggleDecade = (decade) => {
     const currentDecades = preferences.releaseDate || [];

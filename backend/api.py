@@ -21,7 +21,7 @@ user_preferences = {}
 class UserPreferences(BaseModel):
     language: List[str]
     genre: List[str]
-    releaseDate: List[str]
+    releaseDate: List[int]
     budget: List[str]
 
 thread_local = threading.local()
@@ -41,7 +41,7 @@ def read_root():
 def get_movies_by_preference(
     language: Optional[List[str]] = None, 
     genre: Optional[List[str]] = None, 
-    decade: Optional[List[int]] = None, 
+    releaseDate: Optional[List[int]] = None, 
     budget: Optional[List[str]] = None
 ):
     con = get_db_connection()
@@ -55,8 +55,8 @@ def get_movies_by_preference(
         language = ["spanish, castilian"]
     if genre is None:
         genre = ["drama", "comedy", "action"]
-    if decade is None:
-        decade = [2020, 2010]
+    if releaseDate is None:
+        releaseDate = [2020, 2010]
     if budget is None:
         budget = ["small", "med"]
     
@@ -78,11 +78,11 @@ def get_movies_by_preference(
         raise ValueError("Column 'year' was not created successfully!")
     
     
-    if decade:
+    if releaseDate:
         start_years = []
         end_years = []
 
-        for d in decade:
+        for d in releaseDate:
             start_year = (d // 10) * 10
             end_year = start_year + 9
             start_years.append(start_year)
@@ -133,5 +133,16 @@ def submit_preferences(preferences: UserPreferences):
 
         return {"message": "Preferences received successfully!", "data": preferences.model_dump()}
     
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+@app.get("/get-movies")
+def get_movies():
+    try:
+        preferences = user_preferences.get("preferences", None)
+        print(preferences)
+        if preferences is None:
+            raise HTTPException(status_code=404, detail="No preferences found in memory!")
+        
+        return get_movies_by_preference(**preferences)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

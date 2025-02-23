@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { QuizContext } from "../contexts/QuizContext";
 
 const Result = () => {
   const { preferences } = useContext(QuizContext);
   const hasSubmittedRef = useRef(false);
+  const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     if (hasSubmittedRef.current) return;
@@ -23,9 +24,12 @@ const Result = () => {
         );
 
         const data = await response.json();
-        console.log("Movie Recommendations:", data);
+        console.log("Movie Preferences Saved:", data);
+
+        // Fetch recommended movies after submitting preferences
+        fetchMovies();
       } catch (error) {
-        console.error("Error fetching recommendations:", error);
+        console.error("Error submitting preferences:", error);
       }
     };
 
@@ -34,11 +38,30 @@ const Result = () => {
     }
   }, [preferences]);
 
-  console.log("Rendered with preferences:", preferences);
+  const fetchMovies = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/get-movies");
+      const data = await response.json();
+      console.log("Fetched Movies:", data);
+      setMovies(data);
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+    }
+  };
 
   return (
     <div className="container">
       <h1>Quiz Complete!</h1>
+      <h2>Recommended Movies:</h2>
+      {movies.length > 0 ? (
+        <ul>
+          {movies.map((movie, index) => (
+            <li key={index}>{movie.names}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>Loading movie recommendations...</p>
+      )}
     </div>
   );
 };
