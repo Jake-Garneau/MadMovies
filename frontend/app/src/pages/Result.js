@@ -7,7 +7,7 @@ const Result = () => {
   const handleSubmit = async () => {
     try {
       console.log("Submitting preferences:", preferences);
-      const response = await fetch("http://api.com/recommend", {
+      const response = await fetch("http://127.0.0.1:8000/submit-preferences", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(preferences),
