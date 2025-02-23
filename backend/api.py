@@ -1,15 +1,24 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 user_preferences = {}
 class UserPreferences(BaseModel):
     language: List[str]
     genre: List[str]
-    releaseDate: str
-    budget: str
+    releaseDate: List[str]
+    budget: List[str]
 
 @app.get("/")
 def read_root():
