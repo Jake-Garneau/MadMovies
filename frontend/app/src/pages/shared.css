@@ -56,7 +56,7 @@
     background-color: #a10101;
   }
 
-  options-container {
+  .options-container {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
