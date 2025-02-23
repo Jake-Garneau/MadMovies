@@ -26,7 +26,7 @@ This is a **movie recommendation web app** built for a **24-hour hackathon**. Th
 2. **Backend (FastAPI)**:
 
    - The FastAPI backend processes the quiz answers.
-   - It fetches movie data from an SQLite database and applies a **Cosine Similarity** algorithm to recommend movies based on user responses.
+   - It fetches movie data from an SQLite database to recommend movies based on user responses.
 
 3. **Recommendations**:
 
